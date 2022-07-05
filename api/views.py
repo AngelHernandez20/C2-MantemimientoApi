@@ -58,5 +58,12 @@ class agentesView(View):
             else:
                 datos = {'message': "Agentes not found"}
             return JsonResponse(datos)
-        def delete(self, request):
+        def delete(self, request, id):
+            agentes = list(Agentes.objects.filter(id=id).values())
+            if len(agentes) > 0:
+                Agentes.objects.filter(id=id).delete()
+                datos = {'message': "Succes"}
+            else:
+                datos = {'message': "Agentes not found"}
+            return JsonResponse(datos)
             pass
