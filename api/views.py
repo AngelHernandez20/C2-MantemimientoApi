@@ -16,13 +16,22 @@ class agentesView(View):
         def dispatch(self, request, *args, **kwargs):
             return super().dispatch(request, *args, **kwargs)
 
-        def get(self, request):
-            agentes = list(Agentes.objects.values())
-            if len(agentes)>0:
-                datos = {'message':"Succes", 'agentes': agentes}
+        def get(self, request, id=0):
+            if (id>0):
+                agentes=list(Agentes.objects.filter(id=id).values())
+                if len(agentes)>0:
+                    agent= agentes[0]
+                    datos = {'message': "Succes", 'agentes': agent}
+                else:
+                    datos = {'message': "Agentes not found"}
+                return JsonResponse(datos)
             else:
-                datos = {'message': "Agentes not found"}
-            return JsonResponse(datos)
+                agentes = list(Agentes.objects.values())
+                if len(agentes)>0:
+                    datos = {'message':"Succes", 'agentes': agentes}
+                else:
+                    datos = {'message': "Agentes not found"}
+                return JsonResponse(datos)
 
         def post(self, request):
             jd= json.loads(request.body)
@@ -32,8 +41,22 @@ class agentesView(View):
             datos = {'message':"Succes"}
             return JsonResponse(datos)
 
-        def put(self, request):
-            pass
-
+        def put(self, request, id):
+            jd = json.loads(request.body)
+            agentes = list(Agentes.objects.filter(id=id).values())
+            if len(agentes) > 0:
+                agentes=Agentes.objects.get(id=id)
+                agentes.nombre=jd['nombre']
+                agentes.rol = jd['rol']
+                agentes.pais = jd['pais']
+                agentes.habilidad_q = jd['habilidad_q']
+                agentes.habilidad_e = jd['habilidad_e']
+                agentes.habilidad_c = jd['habilidad_c']
+                agentes.definitiva = jd['definitiva']
+                agentes.save()
+                datos = {'message': "Succes"}
+            else:
+                datos = {'message': "Agentes not found"}
+            return JsonResponse(datos)
         def delete(self, request):
             pass
