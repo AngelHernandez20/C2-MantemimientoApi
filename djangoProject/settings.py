@@ -17,13 +17,18 @@ REST_FRAMEWORK = {
 }
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'rest_framework',
+    'api',
+
+    #'rest_framework.authtoken,',
+
 ]
 
 MIDDLEWARE = [
@@ -63,8 +68,15 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': 'angel',
+        'NAME': 'valorant',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
@@ -104,6 +116,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+REST_FRAMEWORK = {
+  'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+  ],
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

@@ -6,9 +6,11 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # En el router vamos añadiendo los endpoints a los viewsets
-router.register('agentes', views.AgentesViewSet)
+router.register('agentes', views.AgentesviewSet)
 
 urlpatterns = [
   path('api/v1/', include(router.urls)),
   path('admin/', admin.site.urls),
+
+
 ]
